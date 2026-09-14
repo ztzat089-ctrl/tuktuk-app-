@@ -1,1 +1,40 @@
+name: Build TukTuk APK
 
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: تنزيل الكود
+        uses: actions/checkout@v4
+
+      - name: تثبيت Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: تثبيت Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      - name: توليد ملفات منصة أندرويد (android/)
+        run: flutter create --platforms=android --org com.tuktuk .
+
+      - name: تثبيت الحزم (packages)
+        run: flutter pub get
+
+      - name: بناء ملف APK
+        run: flutter build apk --release
+
+      - name: رفع ملف APK كمخرجات (Artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: tuktuk-app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
