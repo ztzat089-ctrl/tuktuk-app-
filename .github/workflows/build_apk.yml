@@ -21,7 +21,6 @@ jobs:
       - name: تثبيت Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
           channel: 'stable'
 
       - name: توليد ملفات منصة أندرويد (android/)
