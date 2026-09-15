@@ -23,8 +23,22 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: فحص الملفات قبل البناء
+        run: |
+          echo "== محتويات المجلد الرئيسي =="
+          ls -la
+          echo "== محتويات firebase_config =="
+          ls -la firebase_config || echo "المجلد غير موجود!"
+
       - name: توليد ملفات منصة أندرويد (android/)
         run: flutter create --platforms=android --org com.example --project-name tuktuk_app .
+
+      - name: فحص الملفات بعد التوليد
+        run: |
+          echo "== محتويات المجلد الرئيسي بعد flutter create =="
+          ls -la
+          echo "== محتويات firebase_config بعد flutter create =="
+          ls -la firebase_config || echo "المجلد اختفى بعد flutter create!"
 
       - name: إضافة ملف google-services.json
         run: cp firebase_config/google-services.json android/app/google-services.json
