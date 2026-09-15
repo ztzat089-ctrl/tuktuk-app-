@@ -26,6 +26,11 @@ jobs:
       - name: توليد ملفات منصة أندرويد (android/)
         run: flutter create --platforms=android --org com.tuktuk --project-name tuktuk_app .
 
+      - name: رفع compileSdk وtargetSdk إلى 34
+        run: |
+          sed -i 's/flutter.compileSdkVersion/34/' android/app/build.gradle
+          sed -i 's/flutter.targetSdkVersion/34/' android/app/build.gradle
+
       - name: تثبيت الحزم (packages)
         run: flutter pub get
 
