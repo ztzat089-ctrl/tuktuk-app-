@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "181213323032",
+    "project_id": "tuktuk-app-6705e",
+    "storage_bucket": "tuktuk-app-6705e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181213323032:android:087fe413766dfd8000886d",
+        "android_client_info": {
+          "package_name": "com.example.tuktuk_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMCNAfxxgybPbTarOCyub_8lFzGA0J_Ig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
