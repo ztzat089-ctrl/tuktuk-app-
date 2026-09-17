@@ -60,6 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // اختيار نوع الحساب
             Row(
               children: [
                 Expanded(

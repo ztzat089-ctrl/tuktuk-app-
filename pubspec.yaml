@@ -33,3 +33,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
+
+# تثبيت نسخة Android المتوافقة لتجنب خطأ flutter.compileSdkVersion في Gradle
+dependency_overrides:
+  geolocator_android: 4.6.1
