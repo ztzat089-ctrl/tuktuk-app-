@@ -87,18 +87,44 @@ jobs:
       - name: فحص نسخة Geolocator
         run: flutter pub deps --style=compact | grep -E 'geolocator(_android)? ' || true
 
+      - name: إصلاح geolocator_android قبل Gradle
+        shell: bash
+        run: |
+          set -e
+
+          echo "===== البحث عن geolocator_android ====="
+          find "$HOME/.pub-cache/hosted/pub.dev" -path "*/geolocator_android-*/android/build.gradle" -print
+
+          FILES=$(find "$HOME/.pub-cache/hosted/pub.dev" -path "*/geolocator_android-*/android/build.gradle" -type f)
+
+          if [ -z "$FILES" ]; then
+            echo "ERROR: geolocator_android build.gradle غير موجود"
+            exit 1
+          fi
+
+          for f in $FILES; do
+            echo "===== إصلاح: $f ====="
+
+            sed -i               -e 's/flutter\.compileSdkVersion/35/g'               -e 's/flutter\.minSdkVersion/23/g'               -e 's/flutter\.targetSdkVersion/35/g'               "$f"
+
+            echo "--- بعد الإصلاح ---"
+            grep -n -E 'compileSdk|minSdk|targetSdk|flutter\.' "$f" || true
+
+            if grep -q 'flutter\.compileSdkVersion' "$f"; then
+              echo "ERROR: ما زال flutter.compileSdkVersion موجودًا"
+              exit 1
+            fi
+
+            if grep -q 'flutter\.minSdkVersion' "$f"; then
+              echo "ERROR: ما زال flutter.minSdkVersion موجودًا"
+              exit 1
+            fi
+          done
+
       - name: بناء APK Release
         shell: bash
         run: |
           set -e
-          # حماية إضافية: إذا ظهر geolocator_android القديم في كاش Pub، استبدل
-          # مراجع flutter.* بأرقام ثابتة قبل Gradle.
-          for f in "$HOME/.pub-cache/hosted/pub.dev"/geolocator_android-*/android/build.gradle; do
-            [ -f "$f" ] || continue
-            sed -i 's/flutter\.compileSdkVersion/35/g' "$f"
-            sed -i 's/flutter\.minSdkVersion/23/g' "$f"
-            sed -i 's/flutter\.targetSdkVersion/35/g' "$f"
-          done
           flutter build apk --release --verbose
 
       - name: رفع APK
